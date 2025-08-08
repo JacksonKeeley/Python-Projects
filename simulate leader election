@@ -1,0 +1,26 @@
+import numpy as np
+import matplotlib.pyplot as plt
+def simulate_leader_election(n, trials=1000):
+    def simulate_one_run(n):
+        rounds = 0
+        while n > 1:
+            survivors = np.random.binomial(n, 0.5)
+            n = survivors if survivors > 0 else 1
+            rounds += 1
+        return rounds
+
+    return np.mean([simulate_one_run(n) for _ in range(trials)])
+
+def plot_leader_election(n_max):
+    values = list(range(2, n_max + 1))
+    avg_rounds = [simulate_leader_election(n) for n in values]
+
+    plt.plot(values, avg_rounds, marker='o')
+    plt.xlabel('n')
+    plt.ylabel('Average Rounds L(n)')
+    plt.title('Leader Election Average Rounds')
+    plt.grid(True)
+    plt.show()
+
+plot_leader_election(20)
+
